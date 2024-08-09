@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { register } from '../services/registration'
+import Swal from 'sweetalert2'
+
 const OrderForm = () => {
 
 
@@ -67,13 +69,35 @@ const OrderForm = () => {
         )
     }
 
+    const fileInputRef = useRef(null);
+
     const submitForm = (event) => {
-        event.preventDefault()
+        event.preventDefault();
         console.log(data);
 
         register(data).then((resp) => {
-            console.log(resp)
-            console.log("sucess log");
+            console.log(resp.data)
+            if (resp.data.status === 200) {
+                Swal.fire(resp.data.message);
+                setData({
+                    name: '',
+                    mobileNo: '',
+                    address: '',
+                    size: '',
+                    city: '',
+                    pincode: '',
+                    photo: {
+                        fileName: '',
+                        file: '',
+                        extension: '',
+                        url: ''
+                    }
+                });
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = ''; // Reset the file input
+                }
+            }
+            console.log("success log");
         }).catch((error) => {
             console.log(error)
         })
@@ -147,7 +171,7 @@ const OrderForm = () => {
                     </div>
                     <div className="col-md-7">
                         <label htmlFor="inputImage" className="form-label fw-bold w-100">Upload Payment Screenshot</label>
-                        <input type="file" className="form-control" id="inputImage" name="image" onChange={handleFileChange} />
+                        <input type="file" className="form-control" id="inputImage" name="image" ref={fileInputRef} onChange={handleFileChange} />
                     </div>
                     <div className="header-btn text-center mt-3">
                         <button className="btn-circle btn-default btn fw-bold w-50 bg-success" type="submit">Submit</button>
