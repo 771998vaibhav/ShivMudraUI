@@ -129,31 +129,31 @@ const OrderForm = () => {
                     encType="multipart/form-data"
                 >
                     <div className="col-md-7">
-                        <label htmlFor="inputname" className="form-label fw-bold">Full Name</label>
+                        <label htmlFor="inputname" className="form-label fw-bold">Full Name<span className="text-danger">*</span></label>
                         <input type="text" className="form-control" id="inputname" name="name" value={data.name} required onChange={(e) => handleChange(e, 'name')} />
                     </div>
                     <div className="col-md-7">
-                        <label htmlFor="inputphone" className="form-label fw-bold">Phone No.</label>
+                        <label htmlFor="inputphone" className="form-label fw-bold">Phone No<span className="text-danger">*</span></label>
                         <input type="text" className="form-control" id="inputphone" name="mobileNo" value={data.mobileNo} required onChange={(e) => handleChange(e, 'mobileNo')} pattern="\d{10}"
                             maxLength="10" />
                         {error.errors.mobileNo && <p className="text-danger">{error.errors.mobileNo}</p>}
                     </div>
                     <div className="col-md-7">
-                        <label htmlFor="inputcity" className="form-label fw-bold">City</label>
+                        <label htmlFor="inputcity" className="form-label fw-bold">City<span className="text-danger">*</span></label>
                         <input type="text" className="form-control" id="inputcity" name="city" value={data.city} required onChange={(e) => handleChange(e, 'city')} />
                     </div>
                     <div className="col-md-7">
-                        <label htmlFor="inputpincode" className="form-label fw-bold">Pincode</label>
+                        <label htmlFor="inputpincode" className="form-label fw-bold">Pincode<span className="text-danger">*</span></label>
                         <input type="text" className="form-control" id="inputpincode" name="pincode" value={data.pincode} required onChange={(e) => handleChange(e, 'pincode')} pattern="\d{6}"
-                            maxLength="6"/>
+                            maxLength="6" />
                         {error.errors.pincode && <p className="text-danger">{error.errors.pincode}</p>}
                     </div>
                     <div className="col-md-7">
-                        <label htmlFor="inputaddress" className="form-label fw-bold">Address</label>
+                        <label htmlFor="inputaddress" className="form-label fw-bold">Address<span className="text-danger">*</span></label>
                         <input type="text" className="form-control" id="inputaddress" name="address" value={data.address} required onChange={(e) => handleChange(e, 'address')} />
                     </div>
                     <div className="col-md-7">
-                        <label htmlFor="inputSize" className="form-label fw-bold">T-Shirt Size</label>
+                        <label htmlFor="inputSize" className="form-label fw-bold">T-Shirt Size<span className="text-danger">*</span></label>
                         <select id="inputSize" className="form-select" name="size" value={data.size} required onChange={(e) => handleChange(e, 'size')}>
                             <option value="" disabled>Size</option>
                             <option value="20">20</option>
@@ -183,7 +183,7 @@ const OrderForm = () => {
                         </div>
                     </div>
                     <div className="col-md-7">
-                        <label htmlFor="inputImage" className="form-label fw-bold w-100">Upload Payment Screenshot</label>
+                        <label htmlFor="inputImage" className="form-label fw-bold w-100">Upload Payment Screenshot<span className="text-danger">*</span></label>
                         <input type="file" className="form-control" id="inputImage" name="image" ref={fileInputRef} onChange={handleFileChange} />
                     </div>
                     <div className="header-btn text-center mt-3">
