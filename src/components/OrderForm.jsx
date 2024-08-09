@@ -4,15 +4,7 @@ import Swal from 'sweetalert2'
 
 const OrderForm = () => {
 
-
-
-
-
     const [data, setData] = useState({
-
-
-
-
         name: '',
         mobileNo: '',
         address: '',
@@ -25,10 +17,12 @@ const OrderForm = () => {
             extension: '',
             url: ''
         }
+    });
 
-
-    })
-
+    const [error, setError] = useState({
+        errors: {},
+        isError: false
+    });
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -52,31 +46,50 @@ const OrderForm = () => {
 
     useEffect(() => {
         console.log(data)
-    }, [data])
-    const [error, setError] = useState({
-        errors: {},
-        isError: false
-    })
+    }, [data]);
 
+    const validateMobileNo = (mobileNo) => {
+        const regex = /^\d{10}$/;
+        return regex.test(mobileNo);
+    };
 
-    //Handle change---for changes in input area
+    const validatePincode = (pincode) => {
+        const regex = /^\d{6}$/;
+        return regex.test(pincode);
+    };
 
     const handleChange = (event, property) => {
+        const value = event.target.value;
 
-        //All data will set dynamically
+        let errors = { ...error.errors };
 
-        setData({ ...data, [property]: event.target.value }
-        )
-    }
+        if (property === 'mobileNo' && !validateMobileNo(value)) {
+            errors.mobileNo = 'Please enter a valid 10-digit phone number';
+        } else if (property === 'pincode' && !validatePincode(value)) {
+            errors.pincode = 'Please enter a valid 6-digit pincode';
+        } else {
+            delete errors[property];
+        }
+
+        setError({
+            errors,
+            isError: Object.keys(errors).length > 0
+        });
+
+        setData({ ...data, [property]: value });
+    };
 
     const fileInputRef = useRef(null);
 
     const submitForm = (event) => {
         event.preventDefault();
-        console.log(data);
+
+        if (error.isError) {
+            Swal.fire('Please fix the errors in the form.');
+            return;
+        }
 
         register(data).then((resp) => {
-            console.log(resp.data)
             if (resp.data.status === 200) {
                 Swal.fire(resp.data.message);
                 setData({
@@ -97,15 +110,13 @@ const OrderForm = () => {
                     fileInputRef.current.value = ''; // Reset the file input
                 }
             }
-            console.log("success log");
         }).catch((error) => {
-            console.log(error)
-        })
-    }
+            console.log(error);
+        });
+    };
+
     return (
-
         <div className="site-wrapper-reveal pt-5 pb-5">
-
             <div className="container">
                 <div className="activities-content text-center">
                     <h5 className="text-danger fw-bold mb-2">Shivmudra Group, Faizpur</h5>
@@ -115,9 +126,7 @@ const OrderForm = () => {
                     className="row g-3 d-flex justify-content-center"
                     method="post"
                     onSubmit={submitForm}
-
                     encType="multipart/form-data"
-                //   onSubmit={submitForm} // <-- Change enctype to encType
                 >
                     <div className="col-md-7">
                         <label htmlFor="inputname" className="form-label fw-bold">Full Name</label>
@@ -125,7 +134,9 @@ const OrderForm = () => {
                     </div>
                     <div className="col-md-7">
                         <label htmlFor="inputphone" className="form-label fw-bold">Phone No.</label>
-                        <input type="number" className="form-control" id="inputphone" name="mobileNo" value={data.mobileNo} required onChange={(e) => handleChange(e, 'mobileNo')} />
+                        <input type="text" className="form-control" id="inputphone" name="mobileNo" value={data.mobileNo} required onChange={(e) => handleChange(e, 'mobileNo')} pattern="\d{10}"
+                            maxLength="10" />
+                        {error.errors.mobileNo && <p className="text-danger">{error.errors.mobileNo}</p>}
                     </div>
                     <div className="col-md-7">
                         <label htmlFor="inputcity" className="form-label fw-bold">City</label>
@@ -133,7 +144,9 @@ const OrderForm = () => {
                     </div>
                     <div className="col-md-7">
                         <label htmlFor="inputpincode" className="form-label fw-bold">Pincode</label>
-                        <input type="text" className="form-control" id="inputpincode" name="pincode" value={data.pincode} required onChange={(e) => handleChange(e, 'pincode')} />
+                        <input type="text" className="form-control" id="inputpincode" name="pincode" value={data.pincode} required onChange={(e) => handleChange(e, 'pincode')} pattern="\d{6}"
+                            maxLength="6"/>
+                        {error.errors.pincode && <p className="text-danger">{error.errors.pincode}</p>}
                     </div>
                     <div className="col-md-7">
                         <label htmlFor="inputaddress" className="form-label fw-bold">Address</label>
@@ -179,8 +192,7 @@ const OrderForm = () => {
                 </form>
             </div>
         </div>
-
-    )
+    );
 }
 
-export default OrderForm
+export default OrderForm;
