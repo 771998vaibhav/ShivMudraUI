@@ -175,7 +175,7 @@ const OrderForm = () => {
                     </div>
                     <div className="col-md-7">
                         <div className="header-btn text-center">
-                            <img src="src/images/QRCode.png" className="w-50" alt="" /><br />
+                        <img src="src\images\upi_1723552802500.png" className="w-50" alt="" /><br /> 
                         </div>
                         <div className="header-btn text-center mt-3">
                             <p style={{ color: "red", fontWeight: 'bold' }}>Disclaimer*</p>

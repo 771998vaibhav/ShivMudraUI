@@ -37,7 +37,8 @@ const AdminPannel = () => {
 
   return (
     <div>
-      <label htmlFor="shirtSize"><b>Select Shirt Size:</b> </label>
+     <div>
+     <label htmlFor="shirtSize"><b>Select Shirt Size:</b> </label> 
       <select id="shirtSize" value={shirtSize} onChange={handleSizeChange}>
         <option value="">All Sizes</option>
         <option value="20">20</option>
@@ -56,6 +57,10 @@ const AdminPannel = () => {
         <option value="46">46</option>
         <option value="48">48</option>
       </select>
+     </div>
+      
+
+      
 
       <Table responsive>
         <thead>
@@ -105,6 +110,8 @@ const AdminPannel = () => {
           Next
         </button>
       </div>
+
+      
     </div>
   );
 };

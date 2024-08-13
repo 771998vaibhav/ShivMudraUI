@@ -46,7 +46,10 @@ export const getAllDataInTable = ({ size, page, shirtSize }) => {
 
 export const countDataOfTable=(countData)=>
     {
-        return myAxios.get("/getAllOrder",countData).then((response)=>{
+
+        const params = {shirtSize };
+        return myAxios.get("getAllOrderCount",{ params }).then((response)=>{
+            console.log(response)
             return response;
         })
     }
