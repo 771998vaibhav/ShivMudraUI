@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { getAllDataInTable } from '../services/registration';
+import { countDataOfTable } from '../services/registration';
 
 const AdminPannel = () => {
   const [orders, setOrders] = useState([]);
@@ -8,6 +9,7 @@ const AdminPannel = () => {
   const [shirtSize, setShirtSize] = useState('');
   const [size, setSize] = useState(10);
   const [page, setPage] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -21,6 +23,16 @@ const AdminPannel = () => {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
+
+      countDataOfTable({ shirtSize }) // Fetch the order count based on shirt size
+      .then((response) => {
+        setOrderCount(response.data.body); // Assuming response.data.count contains the count value
+      })
+      .catch((error) => {
+        console.error("Error fetching count:", error);
+        setOrderCount(0); // Handle error by setting count to 0
+      });
+
   }, [size, page, shirtSize]);
 
   const handleSizeChange = (event) => {
@@ -37,8 +49,10 @@ const AdminPannel = () => {
 
   return (
     <div>
-     <div>
+     <div  style={{display:"flex", justifyContent:"space-between", alignItems:"center" ,marginBottom:"20px"}}>
+      <div>
      <label htmlFor="shirtSize"><b>Select Shirt Size:</b> </label> 
+
       <select id="shirtSize" value={shirtSize} onChange={handleSizeChange}>
         <option value="">All Sizes</option>
         <option value="20">20</option>
@@ -57,6 +71,22 @@ const AdminPannel = () => {
         <option value="46">46</option>
         <option value="48">48</option>
       </select>
+      </div>
+
+      <div   style={{
+          width: '80px',
+          height: '50px',
+          borderRadius: '50%',
+          backgroundColor: 'black',
+          color: 'white',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '16px',
+       marginRight:"10%"
+        }}
+      >
+        {orderCount}</div>
      </div>
       
 

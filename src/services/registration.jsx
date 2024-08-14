@@ -44,7 +44,7 @@ export const getAllDataInTable = ({ size, page, shirtSize }) => {
   };
 
 
-export const countDataOfTable=(countData)=>
+export const countDataOfTable=({shirtSize})=>
     {
 
         const params = {shirtSize };
